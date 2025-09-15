@@ -1,0 +1,50 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: event-services
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pg
+    username: postgres
+    password: postgres
+  sql:
+    init:
+      mode: always
+  #jpa:
+  #  properties:
+  #    hibernate:
+  #      default_schema: event_services
+  #      format_sql: true
+    show-sql: true
+    flyway:
+      enabled: true
+      schemas: event_services # O schema que esta aplicação irá gerenciar
+      locations: classpath:db/migration/event_services # Diretório de scripts específico
+        # flyway.table=flyway_schema_history_schema1 # Opcional: Para usar uma tabela de histórico única por schema
+      table: flyway_schema_history_event_services
+
+  kafka:
+    bootstrap-servers: localhost:29092
+
+app:
+  url: http://localhost
+  port: 8085
+  verify-email-endpoint: /auth/verify-user-account
+  new-password-endpoint: /auth/new-password
+
+jwt:
+  public:
+    key: classpath:app.pub
+  private:
+    key: classpath:app.key
+
+expire-times:
+  access-token: 3600           # 1 hour
+  refresh-token: 28800         # 8 hours
+  auth-validation-token: 900   # 15 minutes
+  new-password-token: 300      # 5 minutes
+
+topics:
+  register-user: "register-user.topic.v1"
+  send-email: "send-email.topic.v1"
