@@ -26,11 +26,18 @@ public class UserProfileRepositoryImpl implements UserProfileRepository {
     }
 
     @Override
-    public void update(UUID userId, UserProfile userProfile) {
+    public UserProfile update(UUID userId, UserProfile userProfile) {
+        System.out.println("99999999");
+        System.out.println(userProfile);
         var dbUser = jpaRepo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User profile not found."));
+        System.out.println("1010101010");
+        System.out.println(dbUser);
+
         dbUser.updateProperties(profileMapper.toEntity(userProfile));
-        jpaRepo.save(dbUser);
+        System.out.println("111111111111");
+        System.out.println(dbUser);
+        return profileMapper.toDomain(jpaRepo.save(dbUser));
     }
 
     @Override

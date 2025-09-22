@@ -20,14 +20,19 @@ public class UserController {
 
     @PatchMapping("/profile")
     public ResponseEntity<?> updateUser (@RequestBody UserDataReqDTO req, @RequestHeader("Authorization") String authorizationHeader) {
-        updateUserProfile.execute(authorizationHeader.replace("Bearer ",""), userProfileMapper.toDomain(req));
-        return ResponseEntity.status(HttpStatus.OK).build();
+        System.out.println(req);
+        var updatedProfile = updateUserProfile.execute(authorizationHeader.replace("Bearer ",""), userProfileMapper.toDomain(req));
+        return ResponseEntity.status(HttpStatus.OK).body(
+                userProfileMapper.toDTO(updatedProfile)
+        );
     }
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile (@RequestHeader("Authorization") String authorizationHeader) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                getUserProfile.execute(authorizationHeader.replace("Bearer ",""))
+                userProfileMapper.toDTO(
+                    getUserProfile.execute(authorizationHeader.replace("Bearer ",""))
+                )
         );
     }
 }

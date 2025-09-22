@@ -1,5 +1,6 @@
 package com.anigame.event_services.rest.controller;
 
+import com.anigame.event_services.data.dto.SponsorshipListResponseDTO;
 import com.anigame.event_services.data.mapper.SponsorshipCompanyNameMapper;
 import com.anigame.event_services.domain.usecase.GetAllSponsorshipCompanyNameUseCase;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +19,12 @@ public class SponsorshipController {
 
     @GetMapping("/current")
     public ResponseEntity<?> getAllSponsors() {
-        return ResponseEntity.ok(getAllSponsorshipUseCase.execute().stream().map(
-                sponsorshipCompanyNameMapper::toDTO
-        ).toList());
+        var sponsorshipList = SponsorshipListResponseDTO.builder()
+                .sponsorships(getAllSponsorshipUseCase.execute().stream().map(
+                        sponsorshipCompanyNameMapper::toDTO
+                ).toList())
+                .build();
+        return ResponseEntity.ok(sponsorshipList);
     }
 
 }

@@ -15,8 +15,12 @@ public class UpdateUserProfileService implements UpdateUserProfileUseCase {
     private final TokenService tokenService;
 
     @Override
-    public void execute(String token, UserProfile userProfile) {
+    public UserProfile execute(String token, UserProfile userProfile) {
+        System.out.println("77777777");
+        System.out.println(userProfile);
         var userId = tokenService.getUserIdFromToken(token);
-        userProfileRepository.update(userId, userProfile);
+        System.out.println("888888");
+        System.out.println(userId);
+        return userProfileRepository.update(userId, userProfile);
     }
 }
